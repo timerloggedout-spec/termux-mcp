@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: pnpm
+      - name: Install
+        run: pnpm install
+      - name: Typecheck surface
+        run: |
+          test -f api/server.ts
+          test -f vercel.json
+          test -f package.json
+          node -e "JSON.parse(require('fs').readFileSync('package.json','utf8'))"
+          node -e "JSON.parse(require('fs').readFileSync('vercel.json','utf8'))"
+      - name: MCP contract smoke
+        run: |
+          grep -q createMcpHandler api/server.ts
+          grep -q termux_status api/server.ts
+          grep -q termux_run api/server.ts
+          grep -q termux_pkg api/server.ts
