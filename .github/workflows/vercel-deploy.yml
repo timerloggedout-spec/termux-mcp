@@ -12,9 +12,9 @@ jobs:
     # Team: team_jKHy7m9xZrvrGP5cAlIMPs3S (timerloggedout-5184s-projects)
     # Connector role currently cannot production-deploy; this workflow is the operator path.
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Install Vercel CLI
-        run: npm i -g vercel@latest
+        run: npm i -g vercel@59.11.7
       - name: Pull Vercel env
         run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
         env:
